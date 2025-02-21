@@ -38,11 +38,12 @@ def list_books_in_library(library_name):
         print(f"Library '{library_name}' not found.")
 
 def retrieve_librarian_for_library(library_name):
-    library = Library.objects.filter(name=library_name).first()
-    if library and hasattr(library, 'librarian'):
+    try:
+        library = Library.objects.get(name=library_name)  # Using get() instead of filter().first()
         print(f"Librarian for {library_name}: {library.librarian.name}")
-    else:
-        print(f"Librarian for '{library_name}' not found.")
+    except Library.DoesNotExist:
+        print(f"Library '{library_name}' not found.")
+
 
 if __name__ == "__main__":
     create_sample_data()
