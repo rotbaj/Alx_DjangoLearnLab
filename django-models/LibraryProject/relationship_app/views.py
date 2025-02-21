@@ -12,3 +12,9 @@ def library_detail(request, library_id):
     """Function-based view to display details of a library."""
     library = Library.objects.get(id=library_id)
     return render(request, "relationship_app/library_detail.html", {"library": library})  
+
+class LibraryDetailView(DetailView):
+    """Class-based view to display details of a specific library."""
+    model = Library
+    template_name = "relationship_app/library_detail.html"
+    context_object_name = "library"
