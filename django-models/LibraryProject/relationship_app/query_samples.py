@@ -44,6 +44,19 @@ def retrieve_librarian_for_library(library_name):
     except Library.DoesNotExist:
         print(f"Library '{library_name}' not found.")
 
+def get_books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)  # Using get() to fetch a single author
+        books = Book.objects.filter(author=author)
+        if books.exists():
+            print(f"Books by {author_name}: {[book.title for book in books]}")
+        else:
+            print(f"No books found for {author_name}.")
+    except Author.DoesNotExist:
+        print(f"Author '{author_name}' not found.")
+
+# Example usage:
+get_books_by_author("Chinua Achebe")
 
 if __name__ == "__main__":
     create_sample_data()
