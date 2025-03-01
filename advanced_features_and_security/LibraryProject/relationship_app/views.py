@@ -7,6 +7,11 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  
+from django.apps import apps
+
+# Lazy import Book model to avoid circular import issues
+Book = apps.get_model('relationship_app', 'Book')
+Library = apps.get_model('relationship_app', 'Library')
 
 def list_books(request):
     """Function-based view to list all books."""

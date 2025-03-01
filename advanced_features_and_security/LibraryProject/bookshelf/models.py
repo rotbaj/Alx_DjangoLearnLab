@@ -1,17 +1,9 @@
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
-
-    def __str__(self):
-        return self.title
-    
+# Custom User Manager
 class CustomUserManager(BaseUserManager):
-    def create_user(self, username, email, date_of_birth, password=None, **extra_fields):
+    def create_user(self, username, email, date_of_birth=None, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
@@ -20,16 +12,44 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, date_of_birth, password=None, **extra_fields):
+    def create_superuser(self, username, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, email, date_of_birth, password, **extra_fields)
+        extra_fields.setdefault('date_of_birth', None)  # Make date_of_birth optional for superusers
+        return self.create_user(username, email, password=password, **extra_fields)
 
+# Custom User Model
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
-    objects = CustomUserManager()
-    
+    objects = CustomUserManager()  # Use the custom manager
+
     def __str__(self):
         return self.username
+
+# Book Model
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    publication_year = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
+# Document Model
+class Document(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_by = models.ForeignKey("bookshelf.CustomUser", on_delete=models.CASCADE)  # String reference to avoid circular import
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can View Document"),
+            ("can_create", "Can Create Document"),
+            ("can_edit", "Can Edit Document"),
+            ("can_delete", "Can Delete Document"),
+        ]
+
+    def __str__(self):
+        return self.title
