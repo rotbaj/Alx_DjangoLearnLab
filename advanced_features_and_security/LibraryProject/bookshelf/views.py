@@ -4,7 +4,8 @@ from django.db.models import Q
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from .models import Book
-from .forms import BookForm, ExampleForm
+from .forms import BookForm
+from .forms import ExampleForm
 
 @login_required
 @permission_required('bookshelf.can_view', raise_exception=True)
