@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from .models import Book
-from .forms import BookForm
+from .forms import BookForm, ExampleForm
 
 @login_required
 @permission_required('bookshelf.can_view', raise_exception=True)
@@ -69,3 +69,15 @@ def book_delete(request, pk):
             raise PermissionDenied("You do not have permission to delete this book.")
 
     return render(request, 'bookshelf/book_confirm_delete.html', {'book': book})
+
+# ✅ New Example View using ExampleForm
+@login_required
+def example_form_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Handle form data (e.g., save to DB, send an email, etc.)
+            return redirect('book_list')  # Redirect after successful submission
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/example_form.html', {'form': form})
