@@ -1,5 +1,5 @@
 from django.db import models
-from django.apps import apps  # Import Django's app registry
+from django.apps import apps  
 from django.contrib.auth import get_user_model
 
 # Author Model
@@ -18,6 +18,7 @@ class Book(models.Model):
     class Meta:
         permissions = [
             ("can_add_book", "Can add book"),
+            ("can_view_book", "Can view book"),
             ("can_change_book", "Can edit book"),
             ("can_delete_book", "Can delete book"),
         ]
