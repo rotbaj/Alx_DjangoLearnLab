@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +23,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(lvt5ndyrza*ffvu$&ldr3ieq_&ezur24p0f64%%^g-m484&@n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+# Secure Cookies
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookie is sent over HTTPS
+SESSION_COOKIE_SECURE = True  # Ensures session cookie is sent over HTTPS
+
+# XSS and Clickjacking Protections
+SECURE_BROWSER_XSS_FILTER = True  # Enables X-XSS-Protection header
+X_FRAME_OPTIONS = 'DENY'  # Prevents embedding in an iframe
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-type sniffing
+
+# Content Security Policy (CSP)
+CSP_DEFAULT_SRC = ("'self'",)  # Load resources only from same origin
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")  # Restrict script sources
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Restrict CSS sources
 
 # Application definition
 
@@ -43,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
