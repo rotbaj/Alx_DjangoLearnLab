@@ -41,6 +41,25 @@ CSP_DEFAULT_SRC = ("'self'",)  # Load resources only from same origin
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")  # Restrict script sources
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Restrict CSS sources
 
+# Force HTTPS redirects
+SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
+
+# Enforce HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True  # Session cookies only sent over HTTPS
+CSRF_COOKIE_SECURE = True  # CSRF tokens only sent over HTTPS
+
+# Security headers
+X_FRAME_OPTIONS = "DENY"  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent content-type sniffing
+
+# Additional protection against XSS
+SECURE_BROWSER_XSS_FILTER = True
+
 # Application definition
 
 INSTALLED_APPS = [
