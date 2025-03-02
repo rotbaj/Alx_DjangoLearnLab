@@ -44,6 +44,9 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Restrict CSS sources
 # Force HTTPS redirects
 SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
 
+# Use when running Django behind a reverse proxy (e.g., Nginx, Apache)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Enforce HTTP Strict Transport Security (HSTS)
 SECURE_HSTS_SECONDS = 31536000  # One year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
