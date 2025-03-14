@@ -3,7 +3,21 @@ from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.contrib.auth.models import User
 from api.models import Book
+from django.test import TestCase
 
+
+class BookViewTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+
+    def test_book_list(self):
+        # Login before making requests
+        self.client.login(username='testuser', password='testpass')
+        
+        response = self.client.get('/books/')
+        self.assertEqual(response.status_code, 200)
+        
 class BookAPITests(APITestCase):
     def setUp(self):
         # Create a test user
