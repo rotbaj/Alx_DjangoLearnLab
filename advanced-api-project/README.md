@@ -2,11 +2,15 @@
 
 ### Books
 - **List Books**: `GET /api/books/`
-- **Retrieve a Book**: `GET /api/books/<id>/`
-- **Create a Book**: `POST /api/books/create/`
-- **Update a Book**: `PUT /api/books/<id>/update/`
-- **Delete a Book**: `DELETE /api/books/<id>/delete/`
-
+  - **Filtering**:
+    - `title`: Filter by book title.
+    - `author`: Filter by author.
+    - `publication_year`: Filter by publication year.
+  - **Searching**:
+    - `search`: Search by title or author.
+  - **Ordering**:
+    - `ordering`: Order by `title` or `publication_year` (use `-` for descending order).
+    
 ### Permissions
 - **List and Retrieve**: Open to all users.
 - **Create, Update, Delete**: Restricted to authenticated users.
