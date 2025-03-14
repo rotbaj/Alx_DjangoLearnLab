@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import BookListView, BookDetailView, BookCreateView, BookUpdateView, BookDeleteView
+from .views import (
+    BookListView,       # List all books
+    BookDetailView,     # Retrieve a single book by ID
+    BookCreateView,     # Create a new book
+    BookUpdateView,     # Update an existing book
+    BookDeleteView      # Delete a book
+)
 
 urlpatterns = [
     # List all books
