@@ -19,3 +19,21 @@ The blog post management system supports **CRUD (Create, Read, Update, Delete)**
 - Only authenticated users can create posts.
 - Only the author of a post can edit or delete it.
 - All users can view posts.
+
+## Comment System
+
+The comment system allows users to interact with blog posts by adding, editing, and deleting comments.
+
+### Features
+- **Add Comment**: Authenticated users can add comments to blog posts.
+- **Edit Comment**: Only the comment author can edit their comments.
+- **Delete Comment**: Only the comment author can delete their comments.
+
+### URLs
+- **Add Comment**: `/posts/<int:post_id>/comments/new/`
+- **Edit Comment**: `/comments/<int:pk>/edit/`
+- **Delete Comment**: `/comments/<int:pk>/delete/`
+
+### Permissions
+- Only authenticated users can add comments.
+- Only the comment author can edit or delete their comments.
