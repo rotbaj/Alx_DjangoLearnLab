@@ -1,58 +1,21 @@
-Authentication Workflow
-Registration
-URL: /register/
+## Blog Post Management
 
-View: blog.views.register
+The blog post management system supports **CRUD (Create, Read, Update, Delete)** operations for authenticated users.
 
-Template: blog/templates/blog/register.html
+### Features
+- **Create Post**: Authenticated users can create new posts.
+- **Read Post**: All users can view the list of posts and individual post details.
+- **Update Post**: Only the author of a post can edit it.
+- **Delete Post**: Only the author of a post can delete it.
 
-Form: blog.forms.RegisterForm (extends UserCreationForm to include an email field).
+### URLs
+- **List Posts**: `/posts/`
+- **Create Post**: `/post/new/`
+- **View Post**: `/post/<int:pk>/`
+- **Edit Post**: `/post/<int:pk>/update/`
+- **Delete Post**: `/post/<int:pk>/delete/`
 
-Process:
-
-Users fill out the registration form with their username, email, and password.
-
-Upon successful registration, users are logged in and redirected to the home page.
-
-Login
-URL: /login/
-
-View: Django's built-in LoginView
-
-Template: blog/templates/blog/login.html
-
-Process:
-
-Users enter their username and password.
-
-Upon successful login, users are redirected to the home page.
-
-Logout
-URL: /logout/
-
-View: Django's built-in LogoutView
-
-Process:
-
-Users are logged out and redirected to the home page.
-
-Profile Management
-View Profile:
-
-URL: /profile/
-
-View: blog.views.profile
-
-Template: blog/templates/blog/profile.html
-
-Process: Displays the user's profile information (username and email).
-
-Edit Profile:
-
-URL: /edit_profile/
-
-View: blog.views.edit_profile
-
-Template: blog/templates/blog/edit_profile.html
-
-Process: Allows users to update their email.
+### Permissions
+- Only authenticated users can create posts.
+- Only the author of a post can edit or delete it.
+- All users can view posts.
