@@ -1,9 +1,36 @@
 {% extends "blog/base.html" %}
 {% block content %}
+
+    <!-- Search Bar -->
+    <form method="GET" action="{% url 'search_posts' %}">
+        <input type="text" name="q" placeholder="Search for posts..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
     <h2>{{ post.title }}</h2>
     <p>Published on: {{ post.published_date }}</p>
     <p>Author: {{ post.author.username }}</p>
 
+        <!-- Display Tags -->
+        <p><strong>Tags:</strong> 
+            {% for tag in post.tags.all %}
+                <a href="{% url 'posts_by_tag' tag.slug %}" class="tag-link">{{ tag.name }}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    
+        <hr>
+    
+        <!-- Post Content -->
+        <div class="post-content">
+            {{ post.content|linebreaks }}
+        </div>
+    
+        <hr>
+
+        <!-- Comment Form -->
     {% if user.is_authenticated %}
         <h3>Add a Comment</h3>
         <form method="post" action="{% url 'comment-create' post.id %}">
