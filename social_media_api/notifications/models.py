@@ -10,5 +10,8 @@ class Notification(models.Model):
     target_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     target_object_id = models.PositiveIntegerField()
     target = GenericForeignKey("target_content_type", "target_object_id")
-    created_at = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)  # Added this field
     read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.actor} {self.verb} {self.target} at {self.timestamp}"
