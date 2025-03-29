@@ -1,8 +1,12 @@
-from rest_framework import viewsets, permissions, filters
-from .models import Post, Comment
+from rest_framework import viewsets, permissions, filters, status
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
+from user_activity.models import Notification
+from django.contrib.contenttypes.models import ContentType
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
@@ -29,3 +33,33 @@ class CommentViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+class LikePostView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if created:
+            # Create a notification for the post owner
+            Notification.objects.create(
+                recipient=post.user,
+                actor=request.user,
+                verb="liked your post",
+                target_content_type=ContentType.objects.get_for_model(post),
+                target_object_id=post.id
+            )
+            return Response({"message": "Post liked"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "You already liked this post"}, status=status.HTTP_400_BAD_REQUEST)
+
+class UnlikePostView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            like = Like.objects.get(user=request.user, post_id=pk)
+            like.delete()
+            return Response({"message": "Post unliked"}, status=status.HTTP_204_NO_CONTENT)
+        except Like.DoesNotExist:
+            return Response({"message": "You haven't liked this post"}, status=status.HTTP_400_BAD_REQUEST)
