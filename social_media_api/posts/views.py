@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, filters, status
+from rest_framework import viewsets, permissions, filters, status, generics
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.response import Response
@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
@@ -35,12 +34,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
 class LikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        # Explicitly declaring the object retrieval
-        post = get_object_or_404(Post, pk=pk)  # Ensures post exists before proceeding
+        post = generics.get_object_or_404(Post, pk=pk)
         like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if created:
@@ -59,8 +58,7 @@ class UnlikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        # Explicitly declaring the object retrieval
-        post = get_object_or_404(Post, pk=pk)  # Ensures post exists before proceeding
+        post = generics.get_object_or_404(Post, pk=pk)
         like = Like.objects.filter(user=request.user, post=post).first()
 
         if like:
