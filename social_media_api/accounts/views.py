@@ -11,20 +11,22 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def follow_user(request, user_id):
-    user_to_follow = User.objects.get(id=user_id)
-    request.user.follow(user_to_follow)
-    return Response({'status': 'following'})
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def unfollow_user(request, user_id):
-    user_to_unfollow = User.objects.get(id=user_id)
-    request.user.unfollow(user_to_unfollow)
-    return Response({'status': 'unfollowed'})
+    def post(self, request, user_id):
+        user_to_follow = User.objects.get(id=user_id)
+        request.user.follow(user_to_follow)
+        return Response({'status': 'following'})
 
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_unfollow = User.objects.get(id=user_id)
+        request.user.unfollow(user_to_unfollow)
+        return Response({'status': 'unfollowed'})
+    
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
