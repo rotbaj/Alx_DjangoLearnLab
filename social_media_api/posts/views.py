@@ -4,7 +4,7 @@ from .serializers import PostSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from user_activity.models import Notification
+from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.permissions import IsAuthenticated
 
