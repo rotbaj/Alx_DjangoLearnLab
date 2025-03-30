@@ -83,6 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'PORT': '',
     }
 }
 SECURE_BROWSER_XSS_FILTER = True
