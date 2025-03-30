@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet, feed
+from .views import PostViewSet, CommentViewSet, feed, LikePostView, UnlikePostView 
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
